@@ -1,6 +1,11 @@
 import { useOthers, useStatus } from "../liveblocks.config";
+import type { UITheme } from "../data/themes";
 
-export function ConnectionStatus() {
+type Props = {
+  theme: UITheme;
+};
+
+export function ConnectionStatus({ theme }: Props) {
   const status = useStatus();
   const others = useOthers();
   const connectedCount = others.length + 1; // include self
@@ -22,31 +27,48 @@ export function ConnectionStatus() {
         top: 16,
         left: 16,
         zIndex: 20,
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        background: "#ffffff",
-        border: "1.5px solid #d0d0d0",
-        padding: "6px 12px",
-        borderRadius: 10,
-        fontSize: "0.78rem",
-        color: "#1a1a1a",
-        fontFamily: "'Inter', system-ui, sans-serif",
-        fontWeight: 500,
-        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
       }}
     >
-      <span
+      {/* 3D offset shadow */}
+      <div
         style={{
-          width: 8,
-          height: 8,
-          borderRadius: "50%",
-          background: config.color,
-          display: "inline-block",
+          position: "absolute",
+          top: 4,
+          left: 4,
+          right: -4,
+          bottom: -4,
+          background: theme.shadow,
+          borderRadius: 999,
+          zIndex: -1,
         }}
       />
-      {config.label && <span>{config.label}</span>}
-      <span>👥 {connectedCount}</span>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          background: theme.fill,
+          border: `2.5px solid ${theme.border}`,
+          padding: "6px 12px",
+          borderRadius: 999,
+          fontSize: "0.78rem",
+          color: "#1a1a1a",
+          fontFamily: "'Inter', system-ui, sans-serif",
+          fontWeight: 500,
+        }}
+      >
+        <span
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            background: config.color,
+            display: "inline-block",
+          }}
+        />
+        {config.label && <span>{config.label}</span>}
+        <span>👥 {connectedCount}</span>
+      </div>
     </div>
   );
 }

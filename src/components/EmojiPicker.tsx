@@ -1,105 +1,88 @@
-import { useState } from "react";
-import { EMOJI_CATEGORIES } from "../data/emojis";
+import { EMOJIS } from "../data/emojis";
+import type { UITheme } from "../data/themes";
 
 type Props = {
-  selectedEmoji: string | null;
-  onSelect: (emoji: string) => void;
+    selectedEmoji: string | null;
+    onSelect: (emoji: string) => void;
+    theme: UITheme;
 };
 
-export function EmojiPicker({ selectedEmoji, onSelect }: Props) {
-  const [activeCategory, setActiveCategory] = useState(0);
-
-  return (
-    <div
-      style={{
-        position: "absolute",
-        bottom: 12,
-        left: "50%",
-        transform: "translateX(-50%)",
-        zIndex: 20,
-        background: "#ffffff",
-        backdropFilter: "blur(12px)",
-        border: "1.5px solid #e0e0e0",
-        borderRadius: 16,
-        padding: "10px 12px 8px",
-        boxShadow: "0 2px 12px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)",
-        maxWidth: "calc(100vw - 24px)",
-        width: "auto",
-      }}
-    >
-      {/* Category tabs */}
-      <div
-        style={{
-          display: "flex",
-          gap: 2,
-          padding: "0 0 8px",
-          overflowX: "auto",
-          scrollbarWidth: "none",
-          borderBottom: "1px solid #f0f0f0",
-          marginBottom: 8,
-        }}
-      >
-        {EMOJI_CATEGORIES.map((cat, i) => (
-          <button
-            key={cat.name}
-            onClick={() => setActiveCategory(i)}
+export function EmojiPicker({ selectedEmoji, onSelect, theme }: Props) {
+    return (
+        <div
             style={{
-              padding: "4px 10px",
-              borderRadius: 8,
-              border: activeCategory === i ? "1.5px solid #333" : "1.5px solid transparent",
-              background: activeCategory === i ? "#f5f5f5" : "transparent",
-              color: activeCategory === i ? "#1a1a1a" : "#888",
-              fontSize: "0.72rem",
-              cursor: "pointer",
-              whiteSpace: "nowrap",
-              fontWeight: activeCategory === i ? 600 : 500,
-              fontFamily: "'Inter', system-ui, sans-serif",
-              transition: "all 0.15s ease",
+                position: "absolute",
+                bottom: 16,
+                left: "50%",
+                transform: "translateX(-50%)",
+                zIndex: 20,
+                maxWidth: "calc(100vw - 32px)",
             }}
-          >
-            {cat.name}
-          </button>
-        ))}
-      </div>
-      {/* Emoji grid */}
-      <div
-        style={{
-          display: "flex",
-          gap: 4,
-          padding: 0,
-          overflowX: "auto",
-          scrollbarWidth: "none",
-        }}
-      >
-        {EMOJI_CATEGORIES[activeCategory].emojis.map((emoji) => (
-          <button
-            key={emoji}
-            onClick={() => onSelect(emoji)}
-            style={{
-              fontSize: "1.5rem",
-              padding: "6px",
-              border: selectedEmoji === emoji
-                ? "2px solid #333"
-                : "2px solid transparent",
-              borderRadius: "50%",
-              background:
-                selectedEmoji === emoji
-                  ? "#f0f0f0"
-                  : "transparent",
-              cursor: "pointer",
-              minWidth: 44,
-              minHeight: 44,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "all 0.15s ease",
-              outline: "none",
-            }}
-          >
-            {emoji}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
+        >
+            {/* 3D offset shadow */}
+            <div
+                style={{
+                    position: "absolute",
+                    top: 4,
+                    left: 4,
+                    right: -4,
+                    bottom: -6,
+                    background: theme.shadow,
+                    borderRadius: 999,
+                    zIndex: -1,
+                }}
+            />
+            {/* Main pill */}
+            <div
+                style={{
+                    background: theme.fill,
+                    border: `2.5px solid ${theme.border}`,
+                    borderRadius: 999,
+                    padding: "10px 14px",
+                }}
+            >
+                <div
+                    style={{
+                        display: "flex",
+                        gap: 4,
+                        overflowX: "auto",
+                        scrollbarWidth: "none",
+                        WebkitOverflowScrolling: "touch",
+                    }}
+                >
+                    {EMOJIS.map((emoji) => (
+                        <button
+                            key={emoji}
+                            onClick={() => onSelect(emoji)}
+                            style={{
+                                fontSize: "1.6rem",
+                                padding: 6,
+                                border:
+                                    selectedEmoji === emoji
+                                        ? `3px solid ${theme.border}`
+                                        : "3px solid transparent",
+                                borderRadius: "50%",
+                                background:
+                                    selectedEmoji === emoji
+                                        ? theme.shadow
+                                        : "transparent",
+                                cursor: "pointer",
+                                minWidth: 46,
+                                minHeight: 46,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                transition: "all 0.12s ease",
+                                outline: "none",
+                                flexShrink: 0,
+                                boxShadow: "none",
+                            }}
+                        >
+                            {emoji}
+                        </button>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
 }

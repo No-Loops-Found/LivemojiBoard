@@ -13,17 +13,22 @@ import { EmojiPicker } from "./EmojiPicker";
 import { Cursors } from "./Cursors";
 import { ShareButton } from "./ShareButton";
 import { ConnectionStatus } from "./ConnectionStatus";
+import { SettingsPopup } from "./SettingsPopup";
+import { SettingsButton } from "./SettingsButton";
+import { UI_THEMES } from "../data/themes";
 import type { EmojiItem } from "../types";
 
 export function EmojiCanvas() {
-    const { userId } = useUserId();
+    const { userId, name, colorTheme, hasSetup, setName, setColorTheme, completeSetup } = useUserId();
     const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+    const [showSettings, setShowSettings] = useState(!hasSetup);
+    const updateMyPresence = useUpdateMyPresence();
+    const theme = UI_THEMES[colorTheme];
     const [dimensions, setDimensions] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
     });
     const stageRef = useRef<Konva.Stage>(null);
-    const updateMyPresence = useUpdateMyPresence();
 
     useEffect(() => {
         const handleResize = () => {
@@ -47,7 +52,6 @@ export function EmojiCanvas() {
     const placeEmoji = useMutation(
         ({ storage }, emoji: string, x: number, y: number) => {
             const id = nanoid(10);
-            const themes = ["yellow", "pink", "blue", "green"] as const;
             const item: EmojiItem = {
                 id,
                 emoji,
@@ -55,11 +59,11 @@ export function EmojiCanvas() {
                 y,
                 placedBy: userId,
                 scale: 1,
-                colorTheme: themes[Math.floor(Math.random() * themes.length)],
+                colorTheme: colorTheme,
             };
             storage.get("emojis").set(id, item);
         },
-        [userId],
+        [userId, colorTheme],
     );
 
     const moveEmoji = useMutation(
@@ -282,31 +286,66 @@ export function EmojiCanvas() {
                         top: 16,
                         left: "50%",
                         transform: "translateX(-50%)",
-                        background: "#ffffff",
-                        color: "#1a1a1a",
-                        padding: "7px 14px",
-                        borderRadius: 10,
-                        border: "1.5px solid #d0d0d0",
-                        fontSize: "0.82rem",
-                        fontFamily: "'Inter', system-ui, sans-serif",
-                        fontWeight: 500,
                         pointerEvents: "none",
                         zIndex: 10,
-                        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
                     }}
                 >
-                    Toca el canvas para colocar {selectedEmoji}
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: 4,
+                            left: 4,
+                            right: -4,
+                            bottom: -4,
+                            background: theme.shadow,
+                            borderRadius: 999,
+                            zIndex: -1,
+                        }}
+                    />
+                    <div
+                        style={{
+                            background: theme.fill,
+                            color: "#1a1a1a",
+                            padding: "7px 14px",
+                            borderRadius: 999,
+                            border: `2.5px solid ${theme.border}`,
+                            fontSize: "0.82rem",
+                            fontFamily: "'Inter', system-ui, sans-serif",
+                            fontWeight: 500,
+                            whiteSpace: "nowrap",
+                        }}
+                    >
+                        Toca el canvas para colocar {selectedEmoji}
+                    </div>
                 </div>
             )}
 
             <EmojiPicker
                 selectedEmoji={selectedEmoji}
-                onSelect={(emoji) =>
+                onSelect={(emoji: string) =>
                     setSelectedEmoji(selectedEmoji === emoji ? null : emoji)
                 }
+                theme={theme}
             />
-            <ShareButton />
-            <ConnectionStatus />
+            <SettingsButton onClick={() => setShowSettings(true)} theme={theme} />
+            <ShareButton theme={theme} />
+            <ConnectionStatus theme={theme} />
+
+            {showSettings && (
+                <SettingsPopup
+                    name={name}
+                    colorTheme={colorTheme}
+                    isFirstTime={!hasSetup}
+                    onSave={(newName, newColor) => {
+                        setName(newName);
+                        setColorTheme(newColor);
+                        if (!hasSetup) completeSetup();
+                        updateMyPresence({ name: newName });
+                        setShowSettings(false);
+                    }}
+                    onClose={() => setShowSettings(false)}
+                />
+            )}
         </div>
     );
 }

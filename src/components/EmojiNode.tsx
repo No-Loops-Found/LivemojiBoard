@@ -5,27 +5,27 @@ import type { EmojiItem, EmojiColorTheme } from "../types";
 
 const COLOR_THEMES: Record<
     EmojiColorTheme,
-    { gradientStart: string; gradientEnd: string; border: string }
+    { fill: string; border: string; shadow: string }
 > = {
     yellow: {
-        gradientStart: "#fff9c4",
-        gradientEnd: "#fffacd",
-        border: "#e6c400",
+        fill: "#ffe056",
+        border: "#b89c1e",
+        shadow: "#8a7516",
     },
     pink: {
-        gradientStart: "#ffd6e8",
-        gradientEnd: "#ffc4db",
-        border: "#ff85c0",
+        fill: "#ffb3d9",
+        border: "#c4708a",
+        shadow: "#994e6a",
     },
     blue: {
-        gradientStart: "#cce7ff",
-        gradientEnd: "#b3deff",
-        border: "#6eb5ff",
+        fill: "#7ec8ff",
+        border: "#4a8ab8",
+        shadow: "#356a91",
     },
     green: {
-        gradientStart: "#d4f4dd",
-        gradientEnd: "#c3edcc",
-        border: "#52c47a",
+        fill: "#6ee09a",
+        border: "#3a9e5c",
+        shadow: "#2a7844",
     },
 };
 
@@ -82,28 +82,21 @@ export function EmojiNode({ item, isOwn, onDragEnd, onDelete }: Props) {
             onTouchMove={handleTouchEnd}
             listening={true}
         >
-            {/* Shadow */}
+            {/* 3D offset shadow */}
             <Rect
                 width={size}
                 height={size}
                 cornerRadius={size / 2}
-                fill="rgba(0,0,0,0.06)"
-                x={1}
-                y={2}
+                fill={theme.shadow}
+                x={4}
+                y={4}
             />
-            {/* Background with gradient */}
+            {/* Background */}
             <Rect
                 width={size}
                 height={size}
                 cornerRadius={size / 2}
-                fillLinearGradientStartPoint={{ x: 0, y: 0 }}
-                fillLinearGradientEndPoint={{ x: size, y: size }}
-                fillLinearGradientColorStops={[
-                    0,
-                    theme.gradientStart,
-                    1,
-                    theme.gradientEnd,
-                ]}
+                fill={theme.fill}
                 stroke={theme.border}
                 strokeWidth={BORDER_WIDTH}
             />
