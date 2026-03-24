@@ -25,12 +25,15 @@ export function ConnectionStatus() {
         display: "flex",
         alignItems: "center",
         gap: 8,
-        background: "rgba(255,255,255,0.9)",
-        backdropFilter: "blur(10px)",
+        background: "#ffffff",
+        border: "1.5px solid #d0d0d0",
         padding: "6px 12px",
-        borderRadius: 16,
-        fontSize: "0.8rem",
-        color: "#333",
+        borderRadius: 10,
+        fontSize: "0.78rem",
+        color: "#1a1a1a",
+        fontFamily: "'Inter', system-ui, sans-serif",
+        fontWeight: 500,
+        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
       }}
     >
       <span

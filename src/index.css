@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -11,12 +13,20 @@ html, body, #root {
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #ffffff;
 }
 
 body {
   position: fixed;
   inset: 0;
+}
+
+/* Figma-style dot grid on the canvas */
+.canvas-container {
+  background-color: #ffffff;
+  background-image: radial-gradient(circle, #d4d4d4 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 /* Hide Liveblocks free-tier watermark */

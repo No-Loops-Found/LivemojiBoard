@@ -13,24 +13,30 @@ export function EmojiPicker({ selectedEmoji, onSelect }: Props) {
     <div
       style={{
         position: "absolute",
-        bottom: 0,
-        left: 0,
-        right: 0,
+        bottom: 12,
+        left: "50%",
+        transform: "translateX(-50%)",
         zIndex: 20,
-        background: "rgba(255,255,255,0.95)",
-        backdropFilter: "blur(10px)",
-        borderTop: "1px solid #e0e0e0",
-        padding: "8px 0",
+        background: "#ffffff",
+        backdropFilter: "blur(12px)",
+        border: "1.5px solid #e0e0e0",
+        borderRadius: 16,
+        padding: "10px 12px 8px",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)",
+        maxWidth: "calc(100vw - 24px)",
+        width: "auto",
       }}
     >
       {/* Category tabs */}
       <div
         style={{
           display: "flex",
-          gap: 4,
-          padding: "0 8px 6px",
+          gap: 2,
+          padding: "0 0 8px",
           overflowX: "auto",
           scrollbarWidth: "none",
+          borderBottom: "1px solid #f0f0f0",
+          marginBottom: 8,
         }}
       >
         {EMOJI_CATEGORIES.map((cat, i) => (
@@ -39,14 +45,16 @@ export function EmojiPicker({ selectedEmoji, onSelect }: Props) {
             onClick={() => setActiveCategory(i)}
             style={{
               padding: "4px 10px",
-              borderRadius: 12,
-              border: "none",
-              background: activeCategory === i ? "#333" : "transparent",
-              color: activeCategory === i ? "#fff" : "#666",
-              fontSize: "0.75rem",
+              borderRadius: 8,
+              border: activeCategory === i ? "1.5px solid #333" : "1.5px solid transparent",
+              background: activeCategory === i ? "#f5f5f5" : "transparent",
+              color: activeCategory === i ? "#1a1a1a" : "#888",
+              fontSize: "0.72rem",
               cursor: "pointer",
               whiteSpace: "nowrap",
-              fontWeight: activeCategory === i ? 600 : 400,
+              fontWeight: activeCategory === i ? 600 : 500,
+              fontFamily: "'Inter', system-ui, sans-serif",
+              transition: "all 0.15s ease",
             }}
           >
             {cat.name}
@@ -57,8 +65,8 @@ export function EmojiPicker({ selectedEmoji, onSelect }: Props) {
       <div
         style={{
           display: "flex",
-          gap: 2,
-          padding: "0 8px",
+          gap: 4,
+          padding: 0,
           overflowX: "auto",
           scrollbarWidth: "none",
         }}
@@ -68,13 +76,15 @@ export function EmojiPicker({ selectedEmoji, onSelect }: Props) {
             key={emoji}
             onClick={() => onSelect(emoji)}
             style={{
-              fontSize: "1.6rem",
+              fontSize: "1.5rem",
               padding: "6px",
-              border: "none",
-              borderRadius: 8,
+              border: selectedEmoji === emoji
+                ? "2px solid #333"
+                : "2px solid transparent",
+              borderRadius: "50%",
               background:
                 selectedEmoji === emoji
-                  ? "rgba(59,130,246,0.2)"
+                  ? "#f0f0f0"
                   : "transparent",
               cursor: "pointer",
               minWidth: 44,
@@ -82,10 +92,8 @@ export function EmojiPicker({ selectedEmoji, onSelect }: Props) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              outline:
-                selectedEmoji === emoji
-                  ? "2px solid rgb(59,130,246)"
-                  : "none",
+              transition: "all 0.15s ease",
+              outline: "none",
             }}
           >
             {emoji}

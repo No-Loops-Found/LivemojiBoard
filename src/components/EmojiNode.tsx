@@ -10,22 +10,22 @@ const COLOR_THEMES: Record<
     yellow: {
         gradientStart: "#fff9c4",
         gradientEnd: "#fffacd",
-        border: "#e6c40078",
+        border: "#e6c400",
     },
     pink: {
         gradientStart: "#ffd6e8",
         gradientEnd: "#ffc4db",
-        border: "#ff85c078",
+        border: "#ff85c0",
     },
     blue: {
         gradientStart: "#cce7ff",
         gradientEnd: "#b3deff",
-        border: "#6eb5ff78",
+        border: "#6eb5ff",
     },
     green: {
         gradientStart: "#d4f4dd",
         gradientEnd: "#c3edcc",
-        border: "#52c47a78",
+        border: "#52c47a",
     },
 };
 
@@ -36,8 +36,8 @@ type Props = {
     onDelete: (id: string) => void;
 };
 
-const BOX_SIZE = 52;
-const BORDER_WIDTH = 2;
+const BOX_SIZE = 56;
+const BORDER_WIDTH = 2.5;
 
 export function EmojiNode({ item, isOwn, onDragEnd, onDelete }: Props) {
     const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -82,6 +82,15 @@ export function EmojiNode({ item, isOwn, onDragEnd, onDelete }: Props) {
             onTouchMove={handleTouchEnd}
             listening={true}
         >
+            {/* Shadow */}
+            <Rect
+                width={size}
+                height={size}
+                cornerRadius={size / 2}
+                fill="rgba(0,0,0,0.06)"
+                x={1}
+                y={2}
+            />
             {/* Background with gradient */}
             <Rect
                 width={size}
@@ -101,7 +110,7 @@ export function EmojiNode({ item, isOwn, onDragEnd, onDelete }: Props) {
             {/* Emoji centered */}
             <Text
                 text={item.emoji}
-                fontSize={28 * item.scale}
+                fontSize={30 * item.scale}
                 width={size}
                 height={size}
                 align="center"

@@ -214,6 +214,7 @@ export function EmojiCanvas() {
 
     return (
         <div
+            className="canvas-container"
             style={{
                 width: "100vw",
                 height: "100vh",
@@ -257,13 +258,15 @@ export function EmojiCanvas() {
                         left: "50%",
                         transform: "translate(-50%, -50%)",
                         textAlign: "center",
-                        color: "#888",
-                        fontSize: "1.2rem",
+                        color: "#999",
+                        fontSize: "0.95rem",
                         pointerEvents: "none",
                         userSelect: "none",
+                        fontFamily: "'Inter', system-ui, sans-serif",
+                        fontWeight: 500,
                     }}
                 >
-                    <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>
+                    <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>
                         👆
                     </div>
                     <div>Selecciona un emoji y toca el canvas</div>
@@ -277,13 +280,17 @@ export function EmojiCanvas() {
                         top: 16,
                         left: "50%",
                         transform: "translateX(-50%)",
-                        background: "rgba(0,0,0,0.8)",
-                        color: "white",
-                        padding: "8px 16px",
-                        borderRadius: 20,
-                        fontSize: "0.9rem",
+                        background: "#ffffff",
+                        color: "#1a1a1a",
+                        padding: "7px 14px",
+                        borderRadius: 10,
+                        border: "1.5px solid #d0d0d0",
+                        fontSize: "0.82rem",
+                        fontFamily: "'Inter', system-ui, sans-serif",
+                        fontWeight: 500,
                         pointerEvents: "none",
                         zIndex: 10,
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
                     }}
                 >
                     Toca el canvas para colocar {selectedEmoji}
