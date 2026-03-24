@@ -95,6 +95,22 @@ export function SettingsPopup({
                         )}
                     </h2>
 
+                    {isFirstTime && (
+                        <div
+                            style={{
+                                fontSize: "0.78rem",
+                                color: "#1a1a1a",
+                                lineHeight: 1.5,
+                                marginBottom: 16,
+                                textAlign: "center",
+                            }}
+                        >
+                            <p style={{ margin: "0 0 4px" }}>1. Elige un emoji de la barra inferior</p>
+                            <p style={{ margin: "0 0 4px" }}>2. Toca el canvas para colocarlo</p>
+                            <p style={{ margin: 0 }}>3. Mantén pulsado para eliminar los tuyos</p>
+                        </div>
+                    )}
+
                     {/* Name input */}
                     <label
                         style={{
