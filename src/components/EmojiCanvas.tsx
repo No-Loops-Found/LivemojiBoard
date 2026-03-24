@@ -47,6 +47,7 @@ export function EmojiCanvas() {
     const placeEmoji = useMutation(
         ({ storage }, emoji: string, x: number, y: number) => {
             const id = nanoid(10);
+            const themes = ["yellow", "pink", "blue", "green"] as const;
             const item: EmojiItem = {
                 id,
                 emoji,
@@ -54,6 +55,7 @@ export function EmojiCanvas() {
                 y,
                 placedBy: userId,
                 scale: 1,
+                colorTheme: themes[Math.floor(Math.random() * themes.length)],
             };
             storage.get("emojis").set(id, item);
         },

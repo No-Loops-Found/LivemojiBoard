@@ -1,5 +1,7 @@
 import type { LiveMap } from "@liveblocks/client";
 
+export type EmojiColorTheme = "yellow" | "pink" | "blue" | "green";
+
 export type EmojiItem = {
     id: string;
     emoji: string;
@@ -7,6 +9,7 @@ export type EmojiItem = {
     y: number;
     placedBy: string;
     scale: number;
+    colorTheme: EmojiColorTheme;
 };
 
 export type Presence = {
