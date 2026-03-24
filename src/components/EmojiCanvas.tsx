@@ -237,7 +237,6 @@ export function EmojiCanvas() {
                 style={{ cursor: selectedEmoji ? "crosshair" : "grab" }}
             >
                 <Layer>
-                    <Cursors />
                     {emojis?.map((item) => (
                         <EmojiNode
                             key={item.id}
@@ -247,6 +246,9 @@ export function EmojiCanvas() {
                             onDelete={deleteEmoji}
                         />
                     ))}
+                </Layer>
+                <Layer listening={false}>
+                    <Cursors />
                 </Layer>
             </Stage>
 
