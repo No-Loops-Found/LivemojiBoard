@@ -1,22 +1,14 @@
 import { useState } from "react";
 import type { EmojiColorTheme } from "../types";
+import { UI_THEMES } from "../data/themes";
 
-const COLOR_OPTIONS: {
-    key: EmojiColorTheme;
-    fill: string;
-    border: string;
-    shadow: string;
-}[] = [
-    { key: "yellow", fill: "#ffe056", border: "#b89c1e", shadow: "#8a7516" },
-    { key: "pink", fill: "#ffb3d9", border: "#c4708a", shadow: "#994e6a" },
-    { key: "blue", fill: "#7ec8ff", border: "#4a8ab8", shadow: "#356a91" },
-    { key: "green", fill: "#6ee09a", border: "#3a9e5c", shadow: "#2a7844" },
-];
+const COLOR_OPTIONS: EmojiColorTheme[] = ["yellow", "pink", "blue", "green"];
 
 type Props = {
     name: string;
     colorTheme: EmojiColorTheme;
     onSave: (name: string, color: EmojiColorTheme) => void;
+    onColorChange: (color: EmojiColorTheme) => void;
     onClose: () => void;
     isFirstTime: boolean;
 };
@@ -25,14 +17,14 @@ export function SettingsPopup({
     name,
     colorTheme,
     onSave,
+    onColorChange,
     onClose,
     isFirstTime,
 }: Props) {
     const [localName, setLocalName] = useState(name);
     const [localColor, setLocalColor] = useState<EmojiColorTheme>(colorTheme);
 
-    const selectedTheme =
-        COLOR_OPTIONS.find((c) => c.key === localColor) ?? COLOR_OPTIONS[0];
+    const selectedTheme = UI_THEMES[localColor];
 
     const handleSave = () => {
         onSave(localName, localColor);
@@ -86,9 +78,21 @@ export function SettingsPopup({
                             fontWeight: 700,
                             color: "#1a1a1a",
                             textAlign: "center",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 8,
                         }}
                     >
-                        {isFirstTime ? "¡Bienvenido! 👋" : "⚙️ Ajustes"}
+                        {isFirstTime ? "¡Bienvenido! 👋" : (
+                            <>
+                                {/* <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <circle cx="12" cy="12" r="3" />
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                </svg> */}
+                                Ajustes
+                            </>
+                        )}
                     </h2>
 
                     {/* Name input */}
@@ -158,47 +162,36 @@ export function SettingsPopup({
                             marginBottom: 24,
                         }}
                     >
-                        {COLOR_OPTIONS.map((opt) => (
-                            <div
-                                key={opt.key}
-                                style={{ position: "relative", cursor: "pointer" }}
-                                onClick={() => setLocalColor(opt.key)}
-                            >
-                                {/* 3D shadow */}
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        top: 3,
-                                        left: 3,
-                                        width: 40,
-                                        height: 40,
-                                        borderRadius: "50%",
-                                        background: opt.shadow,
-                                        zIndex: 0,
+                        {COLOR_OPTIONS.map((colorKey) => {
+                            const theme = UI_THEMES[colorKey];
+                            const isSelected = localColor === colorKey;
+                            return (
+                                <button
+                                    key={colorKey}
+                                    onClick={() => {
+                                        setLocalColor(colorKey);
+                                        onColorChange(colorKey);
                                     }}
-                                />
-                                <div
                                     style={{
                                         position: "relative",
-                                        zIndex: 1,
-                                        width: 40,
-                                        height: 40,
+                                        width: 44,
+                                        height: 44,
+                                        padding: 0,
+                                        border: isSelected
+                                            ? `3px solid #1a1a1a`
+                                            : `2.5px solid ${theme.border}`,
+                                        background: theme.fill,
                                         borderRadius: "50%",
-                                        background: opt.fill,
-                                        border:
-                                            localColor === opt.key
-                                                ? `3px solid #1a1a1a`
-                                                : `2.5px solid ${opt.border}`,
+                                        cursor: "pointer",
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",
-                                        fontSize: "1rem",
                                     }}
                                 >
-                                    {localColor === opt.key ? "✓" : ""}
-                                </div>
-                            </div>
-                        ))}
+                                    
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* Save button */}

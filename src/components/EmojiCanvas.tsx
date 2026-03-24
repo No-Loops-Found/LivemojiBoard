@@ -224,6 +224,7 @@ export function EmojiCanvas() {
                 height: "100vh",
                 overflow: "hidden",
                 touchAction: "none",
+                backgroundColor: theme.bgLight,
             }}
         >
             <Stage
@@ -336,6 +337,9 @@ export function EmojiCanvas() {
                     name={name}
                     colorTheme={colorTheme}
                     isFirstTime={!hasSetup}
+                    onColorChange={(newColor) => {
+                        setColorTheme(newColor);
+                    }}
                     onSave={(newName, newColor) => {
                         setName(newName);
                         setColorTheme(newColor);
