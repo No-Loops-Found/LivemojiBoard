@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import type { UITheme } from "../data/themes";
+import { t } from "../data/i18n";
 
 type Props = {
   theme: UITheme;
@@ -71,7 +72,7 @@ export function ShareButton({ theme }: Props) {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="20 6 9 17 4 12" />
             </svg>
-            Copiado
+            {t.copied}
           </>
         ) : (
           <>
@@ -82,7 +83,7 @@ export function ShareButton({ theme }: Props) {
               <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
               <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
             </svg>
-            Compartir
+            {t.share}
           </>
         )}
       </button>

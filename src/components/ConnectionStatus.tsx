@@ -1,5 +1,6 @@
 import { useOthers, useStatus } from "../liveblocks.config";
 import type { UITheme } from "../data/themes";
+import { t } from "../data/i18n";
 
 type Props = {
   theme: UITheme;
@@ -12,10 +13,10 @@ export function ConnectionStatus({ theme }: Props) {
 
   const statusConfig: Record<string, { label: string; color: string }> = {
     connected: { label: "", color: "#2ecc71" },
-    connecting: { label: "Conectando…", color: "#f39c12" },
-    reconnecting: { label: "Reconectando…", color: "#e74c3c" },
-    disconnected: { label: "Desconectado", color: "#e74c3c" },
-    initial: { label: "Conectando…", color: "#f39c12" },
+    connecting: { label: t.connecting, color: "#f39c12" },
+    reconnecting: { label: t.reconnecting, color: "#e74c3c" },
+    disconnected: { label: t.disconnected, color: "#e74c3c" },
+    initial: { label: t.connecting, color: "#f39c12" },
   };
 
   const config = statusConfig[status] ?? statusConfig.connecting;

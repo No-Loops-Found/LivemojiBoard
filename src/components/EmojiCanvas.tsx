@@ -16,6 +16,7 @@ import { ConnectionStatus } from "./ConnectionStatus";
 import { SettingsPopup } from "./SettingsPopup";
 import { SettingsButton } from "./SettingsButton";
 import { UI_THEMES } from "../data/themes";
+import { t } from "../data/i18n";
 import type { EmojiItem } from "../types";
 
 export function EmojiCanvas() {
@@ -297,7 +298,7 @@ export function EmojiCanvas() {
                     <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>
                         👆
                     </div>
-                    <div>Selecciona un emoji y toca el canvas</div>
+                    <div>{t.selectEmoji}</div>
                 </div>
             )}
 
@@ -337,7 +338,7 @@ export function EmojiCanvas() {
                             whiteSpace: "nowrap",
                         }}
                     >
-                        Toca el canvas para colocar {selectedEmoji}
+                        {t.tapToPlace(selectedEmoji)}
                     </div>
                 </div>
             )}
