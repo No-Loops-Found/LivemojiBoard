@@ -49,6 +49,26 @@ export function EmojiCanvas() {
         return items;
     });
 
+    // Cleanup emojis older than 1 week
+    const cleanupOldEmojis = useMutation(({ storage }) => {
+        const emojiMap = storage.get("emojis");
+        const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+        const toDelete: string[] = [];
+        emojiMap.forEach((val, key) => {
+            if (val.placedAt && val.placedAt < oneWeekAgo) {
+                toDelete.push(key);
+            }
+        });
+        toDelete.forEach((key) => emojiMap.delete(key));
+    }, []);
+
+    useEffect(() => {
+        if (emojis === null) return;
+        cleanupOldEmojis();
+        const interval = setInterval(cleanupOldEmojis, 60 * 60 * 1000);
+        return () => clearInterval(interval);
+    }, [cleanupOldEmojis, emojis]);
+
     const placeEmoji = useMutation(
         ({ storage }, emoji: string, x: number, y: number) => {
             const id = nanoid(10);
@@ -60,6 +80,7 @@ export function EmojiCanvas() {
                 placedBy: userId,
                 scale: 1,
                 colorTheme: colorTheme,
+                placedAt: Date.now(),
             };
             storage.get("emojis").set(id, item);
         },

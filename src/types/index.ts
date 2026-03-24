@@ -10,6 +10,7 @@ export type EmojiItem = {
     placedBy: string;
     scale: number;
     colorTheme: EmojiColorTheme;
+    placedAt: number;
 };
 
 export type Presence = {
