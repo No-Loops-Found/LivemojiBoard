@@ -147,6 +147,67 @@ export function EmojiCanvas() {
         });
     }, []);
 
+    // Pinch-to-zoom for mobile
+    const lastPinchDist = useRef<number | null>(null);
+    const lastPinchCenter = useRef<{ x: number; y: number } | null>(null);
+
+    const handleTouchMove = useCallback(
+        (e: Konva.KonvaEventObject<TouchEvent>) => {
+            const touch = e.evt.touches;
+            if (touch.length !== 2) {
+                lastPinchDist.current = null;
+                lastPinchCenter.current = null;
+                return;
+            }
+
+            e.evt.preventDefault();
+            const stage = stageRef.current;
+            if (!stage) return;
+
+            const p1 = { x: touch[0].clientX, y: touch[0].clientY };
+            const p2 = { x: touch[1].clientX, y: touch[1].clientY };
+            const dist = Math.sqrt(
+                (p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2,
+            );
+            const center = {
+                x: (p1.x + p2.x) / 2,
+                y: (p1.y + p2.y) / 2,
+            };
+
+            if (lastPinchDist.current === null || lastPinchCenter.current === null) {
+                lastPinchDist.current = dist;
+                lastPinchCenter.current = center;
+                return;
+            }
+
+            const oldScale = stage.scaleX();
+            const newScale = Math.max(
+                0.3,
+                Math.min(3, oldScale * (dist / lastPinchDist.current)),
+            );
+
+            const mousePointTo = {
+                x: (lastPinchCenter.current.x - stage.x()) / oldScale,
+                y: (lastPinchCenter.current.y - stage.y()) / oldScale,
+            };
+
+            stage.scale({ x: newScale, y: newScale });
+            stage.position({
+                x: center.x - mousePointTo.x * newScale,
+                y: center.y - mousePointTo.y * newScale,
+            });
+
+            lastPinchDist.current = dist;
+            lastPinchCenter.current = center;
+        },
+        [],
+    );
+
+    const handleTouchEnd = useCallback(() => {
+        lastPinchDist.current = null;
+        lastPinchCenter.current = null;
+    }, []);
+
     const isEmpty = !emojis || emojis.length === 0;
 
     return (
@@ -167,6 +228,8 @@ export function EmojiCanvas() {
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 onWheel={handleWheel}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
                 draggable={!selectedEmoji}
                 style={{ cursor: selectedEmoji ? "crosshair" : "grab" }}
             >
