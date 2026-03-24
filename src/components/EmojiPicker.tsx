@@ -38,7 +38,7 @@ export function EmojiPicker({ selectedEmoji, onSelect, theme }: Props) {
                     background: theme.fill,
                     border: `2.5px solid ${theme.border}`,
                     borderRadius: 999,
-                    padding: "10px 14px",
+                    padding: "0px 6px",
                 }}
             >
                 <div
